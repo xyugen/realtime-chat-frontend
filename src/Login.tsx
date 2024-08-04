@@ -4,10 +4,16 @@ import { A } from "@solidjs/router"
 import ShinyHeader from "./components/shiny-header"
 
 const Login: Component = () => {
+  const handleSubmit = (e: SubmitEvent) => {
+    e.preventDefault();
+
+    // TODO: Implement login
+  }
+
   return (
       <div class='bg-white flex flex-col w-3/4 md:w-3/6 lg:w-2/6 p-4 rounded-md gap-3 shadow-md'>
         <ShinyHeader>Login</ShinyHeader>
-        <form action='/' class='flex flex-col gap-2'>
+        <form action='/' onSubmit={handleSubmit} class='flex flex-col gap-2'>
           <div class='flex flex-col'>
             <Label for='username'>Username:</Label>
             <Input id='username' type='text' placeholder="username" required />
