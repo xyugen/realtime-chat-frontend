@@ -1,9 +1,11 @@
 import type { Component } from 'solid-js';
 import { Route, Router } from '@solidjs/router';
-import Login from './Login';
-import Register from './Register';
 import { Toaster } from 'solid-sonner';
-import NotFound from './NotFound';
+
+// Pages
+import Login from './pages/Login';
+import Register from './pages/Register';
+import NotFound from './pages/NotFound';
 
 const App: Component = () => {
   return (

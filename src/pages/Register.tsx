@@ -1,12 +1,12 @@
 import { Component, createSignal, Match, Switch } from "solid-js"
-import { Input, Label, ShinyHeader } from "./components"
+import { Input, Label, ShinyHeader } from "../components"
 import { A, useNavigate } from "@solidjs/router"
 import { toast } from "solid-sonner"
 import { z } from "zod"
 import { config } from "@/lib/config"
 import axios from "axios"
 import { LoaderCircle } from "lucide-solid"
-import Button from "./components/button"
+import Button from "../components/button"
 
 const registerSchema = z
   .object({

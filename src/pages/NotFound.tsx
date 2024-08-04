@@ -1,5 +1,5 @@
 import { Component } from "solid-js"
-import { ShinyHeader } from "./components"
+import { ShinyHeader } from "../components"
 import { A } from "@solidjs/router"
 
 const NotFound: Component = () => {

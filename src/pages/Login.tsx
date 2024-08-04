@@ -1,16 +1,22 @@
 import { Component, createSignal, Match, Switch } from "solid-js"
-import { Input, Label, ShinyHeader } from "./components/"
+import { Input, Label, ShinyHeader } from "../components"
 import { A } from "@solidjs/router"
 import { z } from "zod"
 import { toast } from "solid-sonner"
 import axios from "axios"
 import { config } from "@/lib/config"
 import { Eye, EyeOff, LoaderCircle } from "lucide-solid"
-import Button from "./components/button"
+import Button from "../components/button"
 
 const loginSchema = z.object({
-  username: z.string({ required_error: "Username is required" }).trim().min(4, { message: "Username must be at least 4 characters" }),
-  password: z.string({ required_error: "Password is required" }).trim().min(6, { message: "Password must be at least 6 characters" }),
+  username: z
+    .string({ required_error: "Username is required" })
+    .trim()
+    .min(4, { message: "Username must be at least 4 characters" }),
+  password: z
+    .string({ required_error: "Password is required" })
+    .trim()
+    .min(6, { message: "Password must be at least 6 characters" }),
 })
 
 const Login: Component = () => {
