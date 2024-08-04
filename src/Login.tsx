@@ -37,6 +37,10 @@ const Login: Component = () => {
     axios.post(`${config.serverUrl}/auth/login`, {
       username: username(),
       password: password()
+    }, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
     }).then((res) => {
       if (res.status === 200) {
         toast.success("Login successful");
