@@ -1,9 +1,10 @@
 import { Component, createSignal } from "solid-js"
-import { Input, Label } from "./components"
-import { A } from "@solidjs/router"
-import ShinyHeader from "./components/shiny-header"
+import { Input, Label, ShinyHeader } from "./components"
+import { A, useNavigate } from "@solidjs/router"
 import { toast } from "solid-sonner"
 import { z } from "zod"
+import { config } from "@/lib/config"
+import axios from "axios"
 
 const registerSchema = z
   .object({
@@ -20,6 +21,7 @@ const Register: Component = () => {
   const [username, setUsername] = createSignal('');
   const [password, setPassword] = createSignal('');
   const [confirmPassword, setConfirmPassword] = createSignal('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
@@ -35,7 +37,18 @@ const Register: Component = () => {
       return;
     }
 
-    // TODO: Implement registration
+    axios.post(`${config.serverUrl}/auth/register`, {
+      username: username(),
+      password: password()
+    }).then((res) => {
+      if (res.status === 200) {
+        toast.success("Account created successfully. Please login.");
+        navigate("/login");
+      }
+    }).catch((err) => {
+      console.log(err)
+      toast.error(err.response.data.message);
+    })
   }
 
   return (
@@ -57,7 +70,7 @@ const Register: Component = () => {
           <br />
           <input type="submit" value='REGISTER' class='bg-seagull-500 hover:bg-seagull-500/80 h-9 transition-colors text-white font-bold cursor-pointer p-1 rounded' />
         </form>
-        <p class='text-sm text-center'>Already have an account? <A href="/" class="text-seagull-500">Sign In</A></p>
+        <p class='text-sm text-center'>Already have an account? <A href="/login" class="text-seagull-500">Sign In</A></p>
       </div>
   )
 }

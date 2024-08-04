@@ -10,8 +10,8 @@ const App: Component = () => {
   return (
     <div class='w-screen h-screen flex justify-center items-center bg-seagull-100'>
       <Router>
-        <Route path='/' component={Login} />
-        <Route path='register' component={Register} />
+        <Route path='/login' component={Login} />
+        <Route path='/register' component={Register} />
       </Router>
       <Toaster
         toastOptions={{

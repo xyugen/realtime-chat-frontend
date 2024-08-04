@@ -1,9 +1,10 @@
 import { Component, createSignal } from "solid-js"
-import { Input, Label } from "./components/"
+import { Input, Label, ShinyHeader } from "./components/"
 import { A } from "@solidjs/router"
-import ShinyHeader from "./components/shiny-header"
 import { z } from "zod"
 import { toast } from "solid-sonner"
+import axios from "axios"
+import { config } from "@/lib/config"
 
 const loginSchema = z.object({
   username: z.string({ required_error: "Username is required" }).trim().min(4, { message: "Username must be at least 4 characters" }),
@@ -26,8 +27,20 @@ const Login: Component = () => {
       toast.error(result.error.issues[0].message);
       return;
     }
-    
+
     // TODO: Implement login
+    axios.post(`${config.serverUrl}/auth/login`, {
+      username: username(),
+      password: password()
+    }).then((res) => {
+      if (res.status === 200) {
+        toast.success("Login successful");
+      }
+      // TODO: Redirect to chat
+    }).catch((err) => {
+      console.log(err)
+      toast.error(err.response.data.message);
+    });
   }
 
   return (
