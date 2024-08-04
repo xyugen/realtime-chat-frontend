@@ -1,5 +1,5 @@
 import { Component } from "solid-js"
-import Input from "./components/input"
+import { Input, Label } from "./components"
 import { A } from "@solidjs/router"
 
 const Register: Component = () => {
@@ -8,15 +8,15 @@ const Register: Component = () => {
         <h1 class='text-4xl font-bold text-seagull-500'>Create an Account</h1>
         <form action='' class='flex flex-col gap-2'>
           <div class='flex flex-col'>
-            <label for='username'>Username:</label>
+            <Label for='username'>Username:</Label>
             <Input id='username' type='text' required />
           </div>
           <div class='flex flex-col'>
-            <label for='password'>Password:</label>
+            <Label for='password'>Password:</Label>
             <Input id='password' type='password' required />
           </div>
           <div class="flex flex-col">
-            <label for='confirm-password'>Confirm Password:</label>
+            <Label for='confirm-password'>Confirm Password:</Label>
             <Input id='confirm-password' type='password' required />
           </div>
           <br />
