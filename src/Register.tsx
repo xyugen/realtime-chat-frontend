@@ -1,10 +1,12 @@
-import { Component, createSignal } from "solid-js"
+import { Component, createSignal, Match, Switch } from "solid-js"
 import { Input, Label, ShinyHeader } from "./components"
 import { A, useNavigate } from "@solidjs/router"
 import { toast } from "solid-sonner"
 import { z } from "zod"
 import { config } from "@/lib/config"
 import axios from "axios"
+import { LoaderCircle } from "lucide-solid"
+import Button from "./components/button"
 
 const registerSchema = z
   .object({
@@ -21,10 +23,12 @@ const Register: Component = () => {
   const [username, setUsername] = createSignal('');
   const [password, setPassword] = createSignal('');
   const [confirmPassword, setConfirmPassword] = createSignal('');
+  const [isLoading, setIsLoading] = createSignal(false);
   const navigate = useNavigate();
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const result = registerSchema.safeParse({
       username: username(),
@@ -34,6 +38,7 @@ const Register: Component = () => {
 
     if (!result.success) {
       toast.error(result.error.issues[0].message);
+      setIsLoading(false);
       return;
     }
 
@@ -48,6 +53,8 @@ const Register: Component = () => {
     }).catch((err) => {
       console.log(err)
       toast.error(err.response.data.message);
+    }).finally(() => {
+      setIsLoading(false);
     })
   }
 
@@ -68,7 +75,18 @@ const Register: Component = () => {
             <Input id='confirm-password' type='password' value={confirmPassword()} onChange={(e: any) => setConfirmPassword(e.target.value)} required />
           </div>
           <br />
-          <input type="submit" value='REGISTER' class='bg-seagull-500 hover:bg-seagull-500/80 h-9 transition-colors text-white font-bold cursor-pointer p-1 rounded' />
+          <div class='w-full'>
+            <Button type="submit" disabled={isLoading()}>
+              <Switch>
+                <Match when={!isLoading()}>
+                  LOGIN
+                </Match>
+                <Match when={isLoading()}>
+                  <LoaderCircle class="animate-spin text-white"/>
+                </Match>
+              </Switch>
+            </Button>
+          </div>
         </form>
         <p class='text-sm text-center'>Already have an account? <A href="/login" class="text-seagull-500">Sign In</A></p>
       </div>

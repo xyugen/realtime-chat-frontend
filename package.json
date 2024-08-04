@@ -23,6 +23,7 @@
     "@solidjs/router": "^0.14.1",
     "axios": "^1.7.3",
     "clsx": "^2.1.1",
+    "lucide-solid": "^0.424.0",
     "solid-js": "^1.8.11",
     "solid-sonner": "^0.2.8",
     "tailwind-merge": "^2.4.0",

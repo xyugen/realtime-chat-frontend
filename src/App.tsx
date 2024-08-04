@@ -1,10 +1,8 @@
 import type { Component } from 'solid-js';
-import Input from './components/input';
 import { Route, Router } from '@solidjs/router';
 import Login from './Login';
 import Register from './Register';
 import { Toaster } from 'solid-sonner';
-import { error } from 'console';
 import NotFound from './NotFound';
 
 const App: Component = () => {
@@ -22,7 +20,6 @@ const App: Component = () => {
             error: 'bg-red-500 text-white',
             info: 'bg-seagull-500 text-white',
             success: 'bg-green-500 text-white',
-            default: 'bg-seagull-200',
           }
         }}
       />
