@@ -21,6 +21,8 @@
   },
   "dependencies": {
     "@solidjs/router": "^0.14.1",
-    "solid-js": "^1.8.11"
+    "clsx": "^2.1.1",
+    "solid-js": "^1.8.11",
+    "tailwind-merge": "^2.4.0"
   }
 }

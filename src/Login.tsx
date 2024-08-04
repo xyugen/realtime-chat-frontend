@@ -9,14 +9,14 @@ const Login: Component = () => {
         <form action='' class='flex flex-col gap-2'>
           <div class='flex flex-col'>
             <Label for='username'>Username:</Label>
-            <Input id='username' type='text' required />
+            <Input id='username' type='text' placeholder="username" required />
           </div>
           <div class='flex flex-col'>
             <Label for='password'>Password:</Label>
             <Input id='username' type='password' required />
           </div>
           <br />
-          <input type="submit" value='LOGIN' class='bg-seagull-500 text-white font-bold cursor-pointer p-1 rounded' />
+          <input type="submit" value='LOGIN' class='bg-seagull-500 hover:bg-seagull-500/80 h-9 transition-colors text-white font-bold cursor-pointer p-1 rounded' />
         </form>
         <p class='text-sm text-center'>Don't have an account? <A href="/register" class="text-seagull-500">Create Account</A></p>
       </div>
