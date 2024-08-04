@@ -38,8 +38,7 @@ const Login: Component = () => {
       }
       // TODO: Redirect to chat
     }).catch((err) => {
-      console.log(err)
-      toast.error(err.response.data.message);
+      toast.error(err.response.data.message || err.message);
     });
   }
 

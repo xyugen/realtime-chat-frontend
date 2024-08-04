@@ -5,6 +5,7 @@ import Login from './Login';
 import Register from './Register';
 import { Toaster } from 'solid-sonner';
 import { error } from 'console';
+import NotFound from './NotFound';
 
 const App: Component = () => {
   return (
@@ -12,6 +13,7 @@ const App: Component = () => {
       <Router>
         <Route path='/login' component={Login} />
         <Route path='/register' component={Register} />
+        <Route path='*404' component={NotFound} />
       </Router>
       <Toaster
         toastOptions={{
