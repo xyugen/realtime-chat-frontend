@@ -24,6 +24,7 @@
     "clsx": "^2.1.1",
     "solid-js": "^1.8.11",
     "solid-sonner": "^0.2.8",
-    "tailwind-merge": "^2.4.0"
+    "tailwind-merge": "^2.4.0",
+    "zod": "^3.23.8"
   }
 }

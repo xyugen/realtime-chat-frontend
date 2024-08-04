@@ -18,6 +18,9 @@ export default defineConfig({
   build: {
     target: 'esnext',
   },
+  optimizeDeps: {
+    include: ['zod'],
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

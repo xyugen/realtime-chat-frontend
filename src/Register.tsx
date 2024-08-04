@@ -3,6 +3,18 @@ import { Input, Label } from "./components"
 import { A } from "@solidjs/router"
 import ShinyHeader from "./components/shiny-header"
 import { toast } from "solid-sonner"
+import { z } from "zod"
+
+const registerSchema = z
+  .object({
+    username: z.string({ required_error: "Username is required" }).trim().min(4, { message: "Username must be at least 4 characters" }),
+    password: z.string({ required_error: "Password is required" }).trim().min(6, { message: "Password must be at least 6 characters" }),
+    confirmPassword: z.string({ required_error: "Confirm password is required" }).trim().min(6, { message: "Confirm password must be at least 6 characters" }),
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"]
+  })
 
 const Register: Component = () => {
   const [username, setUsername] = createSignal('');
@@ -11,9 +23,15 @@ const Register: Component = () => {
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
-    
-    if (password() !== confirmPassword()) {
-      toast.error("Passwords do not match!");
+
+    const result = registerSchema.safeParse({
+      username: username(),
+      password: password(),
+      confirmPassword: confirmPassword()
+    });
+
+    if (!result.success) {
+      toast.error(result.error.issues[0].message);
       return;
     }
 

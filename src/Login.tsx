@@ -1,12 +1,32 @@
-import { Component } from "solid-js"
+import { Component, createSignal } from "solid-js"
 import { Input, Label } from "./components/"
 import { A } from "@solidjs/router"
 import ShinyHeader from "./components/shiny-header"
+import { z } from "zod"
+import { toast } from "solid-sonner"
+
+const loginSchema = z.object({
+  username: z.string({ required_error: "Username is required" }).trim().min(4, { message: "Username must be at least 4 characters" }),
+  password: z.string({ required_error: "Password is required" }).trim().min(6, { message: "Password must be at least 6 characters" }),
+})
 
 const Login: Component = () => {
+  const [username, setUsername] = createSignal('');
+  const [password, setPassword] = createSignal('');
+
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
 
+    const result = loginSchema.safeParse({
+      username: username(),
+      password: password(),
+    })
+
+    if (!result.success) {
+      toast.error(result.error.issues[0].message);
+      return;
+    }
+    
     // TODO: Implement login
   }
 
@@ -16,11 +36,11 @@ const Login: Component = () => {
         <form action='/' onSubmit={handleSubmit} class='flex flex-col gap-2'>
           <div class='flex flex-col'>
             <Label for='username'>Username:</Label>
-            <Input id='username' type='text' placeholder="username" required />
+            <Input id='username' type='text' placeholder="username" value={username()} onChange={(e: any) => setUsername(e.target.value)} required />
           </div>
           <div class='flex flex-col'>
             <Label for='password'>Password:</Label>
-            <Input id='password' type='password' required />
+            <Input id='password' type='password' value={password()} onChange={(e: any) => setPassword(e.target.value)} required />
           </div>
           <br />
           <input type="submit" value='LOGIN' class='bg-seagull-500 hover:bg-seagull-500/80 h-9 transition-colors text-white font-bold cursor-pointer p-1 rounded' />
