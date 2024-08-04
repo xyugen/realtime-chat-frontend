@@ -5,7 +5,7 @@ import { z } from "zod"
 import { toast } from "solid-sonner"
 import axios from "axios"
 import { config } from "@/lib/config"
-import { LoaderCircle } from "lucide-solid"
+import { Eye, EyeOff, LoaderCircle } from "lucide-solid"
 import Button from "./components/button"
 
 const loginSchema = z.object({
@@ -17,6 +17,7 @@ const Login: Component = () => {
   const [username, setUsername] = createSignal('');
   const [password, setPassword] = createSignal('');
   const [isLoading, setIsLoading] = createSignal(false);
+  const [showPassword, setShowPassword] = createSignal(false);
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
@@ -63,7 +64,12 @@ const Login: Component = () => {
           </div>
           <div class='flex flex-col'>
             <Label for='password'>Password:</Label>
-            <Input id='password' type='password' value={password()} onChange={(e: any) => setPassword(e.target.value)} required />
+            <div class="relative">
+              <Input id='password' type={showPassword() ? 'text' : 'password'} value={password()} onChange={(e: any) => setPassword(e.target.value)} class="w-full pr-10" required />
+              <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2" onClick={() => setShowPassword(!showPassword())}>
+                {showPassword() ? <EyeOff class="h-5 w-5 text-seagull-800" /> : <Eye class="h-5 w-5 text-seagull-800" />}
+              </button>
+            </div>
           </div>
           <br />
           <div class='w-full'>
