@@ -41,12 +41,12 @@ const Login: Component = () => {
     }
 
     // TODO: Implement login
-    axios.post(`${config.serverUrl}/auth/login`, {
+    axios.post(`${config.serverUrl}/login`, {
       username: username(),
       password: password()
     }, {
       headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'application/json'
       }
     }).then((res) => {
       if (res.status === 200) {

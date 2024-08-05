@@ -42,21 +42,20 @@ const Register: Component = () => {
       return;
     }
 
-    axios.post(`${config.serverUrl}/auth/register`, {
+    axios.post(`${config.serverUrl}/register`, {
       username: username(),
       password: password()
     }, {
       headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'application/json'
       }
     }).then((res) => {
-      if (res.status === 200) {
+      if (res.status === 201) {
         toast.success("Account created successfully. Please login.");
         navigate("/login");
       }
     }).catch((err) => {
-      console.log(err)
-      toast.error(err.response.data.message);
+      toast.error(err.response.data.error || err.response.data);
     }).finally(() => {
       setIsLoading(false);
     })
@@ -83,7 +82,7 @@ const Register: Component = () => {
             <Button type="submit" disabled={isLoading()}>
               <Switch>
                 <Match when={!isLoading()}>
-                  LOGIN
+                  SIGN UP
                 </Match>
                 <Match when={isLoading()}>
                   <LoaderCircle class="animate-spin text-white"/>
