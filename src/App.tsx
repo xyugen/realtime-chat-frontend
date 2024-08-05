@@ -6,11 +6,13 @@ import { Toaster } from 'solid-sonner';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import NotFound from './pages/NotFound';
+import Home from './pages/Home';
 
 const App: Component = () => {
   return (
     <div class='w-screen h-screen flex justify-center items-center bg-seagull-100'>
       <Router>
+        <Route path='/' component={Home} />
         <Route path='/login' component={Login} />
         <Route path='/register' component={Register} />
         <Route path='*404' component={NotFound} />

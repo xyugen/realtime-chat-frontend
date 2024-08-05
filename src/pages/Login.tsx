@@ -66,7 +66,7 @@ const Login: Component = () => {
         <form action='/' onSubmit={handleSubmit} class='flex flex-col gap-2 w-full'>
           <div class='flex flex-col'>
             <Label for='username'>Username:</Label>
-            <Input id='username' type='text' placeholder="username" value={username()} onChange={(e: any) => setUsername(e.target.value)} required />
+            <Input id='username' type='text' value={username()} onChange={(e: any) => setUsername(e.target.value)} required />
           </div>
           <div class='flex flex-col'>
             <Label for='password'>Password:</Label>
