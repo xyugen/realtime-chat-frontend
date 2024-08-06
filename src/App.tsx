@@ -1,20 +1,26 @@
-import type { Component } from 'solid-js';
-import { Route, Router } from '@solidjs/router';
+import { lazy, onMount, type Component } from 'solid-js';
+import { Router } from '@solidjs/router';
 import { Toaster } from 'solid-sonner';
 
 // Pages
-import { Chat, Home, Login, NotFound, Register } from './pages';
+import { Home } from './pages';
+
+const routes = [
+  { path: '/', component: Home },
+  { path: '/login', component: lazy(() => import('./pages/auth/Login')) },
+  { path: '/register', component: lazy(() => import('./pages/auth/Register')) },
+  { path: '/c', component: lazy(() => import('./pages/ProtectedRoute')),
+    children: [
+      { path: '/', component: lazy(() => import('./pages/chat/Chat')) }
+    ] 
+  },
+  { path: '/*404', component: lazy(() => import('./pages/NotFound')) },
+]
 
 const App: Component = () => {
   return (
     <div class='w-screen h-screen flex justify-center items-center bg-seagull-100'>
-      <Router>
-        <Route path='/' component={Home} />
-        <Route path='/login' component={Login} />
-        <Route path='/register' component={Register} />
-        <Route path='/c' component={Chat} />
-        <Route path='*404' component={NotFound} />
-      </Router>
+      <Router>{routes}</Router>
       <Toaster
         toastOptions={{
           classes: {

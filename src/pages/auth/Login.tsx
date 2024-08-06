@@ -6,6 +6,8 @@ import axios from "axios"
 import { LoaderCircle } from "lucide-solid"
 import { createStore } from "solid-js/store"
 import { login } from "@/services/api"
+import { useNavigate } from "@solidjs/router"
+import { getSession } from "@/lib/auth"
 
 const loginSchema = z.object({
   username: z
@@ -19,11 +21,17 @@ const loginSchema = z.object({
 })
 
 const Login: Component = () => {
+  const navigate = useNavigate();
   const [form, setForm] = createStore<z.infer<typeof loginSchema>>({
     username: '',
     password: ''
   })
   const [isLoading, setIsLoading] = createSignal(false);
+  const { user } = getSession();
+
+  if (user) {
+    navigate('/c', { replace: true });
+  }
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
@@ -41,7 +49,16 @@ const Login: Component = () => {
     }
 
     login({ username: form.username, password: form.password })
-      .finally(() => {
+      .then((res) => {
+        if (res.status === 200) {
+            toast.success("Login successful");
+            navigate('/c');
+        }
+        // TODO: Redirect to chat
+      }).catch((err) => {
+        const errorMessage: string = capitalizeFirstLetter(err.response.data.error);
+        toast.error(errorMessage || err.message);
+      }).finally(() => {
         setIsLoading(false);
         setForm({ password: '' });
       });
