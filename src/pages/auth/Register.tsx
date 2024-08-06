@@ -1,12 +1,8 @@
 import { Component, createSignal, Match, Switch } from "solid-js"
 import { Input, Label, ShinyHeader, Button, Link, PasswordInput } from "@/components"
-import { useNavigate } from "@solidjs/router"
 import { toast } from "solid-sonner"
 import { z } from "zod"
-import { config } from "@/lib/config"
-import axios from "axios"
 import { LoaderCircle } from "lucide-solid"
-import { capitalizeFirstLetter } from "@/lib/utils"
 import { createStore } from "solid-js/store"
 import { register } from "@/services/api"
 
@@ -28,7 +24,6 @@ const Register: Component = () => {
     confirmPassword: ''
   })
   const [isLoading, setIsLoading] = createSignal(false);
-  const navigate = useNavigate();
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();
@@ -47,15 +42,7 @@ const Register: Component = () => {
     }
 
     register({ username: form.username, password: form.password })
-      .then((res) => {
-        if (res.status === 201) {
-          toast.success("Account created successfully. Please login.");
-          navigate("/login");
-        }
-      }).catch((err) => {
-        const errorMessage: string = capitalizeFirstLetter(err.response.data.error);
-        toast.error(errorMessage || err.response.data);
-      }).finally(() => {
+      .finally(() => {
         setIsLoading(false);
         setForm({ password: '', confirmPassword: '' });
       })

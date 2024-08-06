@@ -3,9 +3,7 @@ import { Input, Label, ShinyHeader, Button, Link, PasswordInput } from "@/compon
 import { z } from "zod"
 import { toast } from "solid-sonner"
 import axios from "axios"
-import { config } from "@/lib/config"
 import { LoaderCircle } from "lucide-solid"
-import { capitalizeFirstLetter } from "@/lib/utils"
 import { createStore } from "solid-js/store"
 import { login } from "@/services/api"
 
@@ -43,14 +41,9 @@ const Login: Component = () => {
     }
 
     login({ username: form.username, password: form.password })
-      .then((res) => {
-          if (res.status === 200) {
-              toast.success("Login successful");
-          }
-          // TODO: Redirect to chat
-      }).catch((err) => {
-          const errorMessage: string = capitalizeFirstLetter(err.response.data.error);
-          toast.error(errorMessage || err.message);
+      .finally(() => {
+        setIsLoading(false);
+        setForm({ password: '' });
       });
   }
 

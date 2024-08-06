@@ -3,10 +3,7 @@ import { Route, Router } from '@solidjs/router';
 import { Toaster } from 'solid-sonner';
 
 // Pages
-import Login from './pages/auth/Login';
-import Register from './pages/auth/Register';
-import NotFound from './pages/NotFound';
-import Home from './pages/Home';
+import { Chat, Home, Login, NotFound, Register } from './pages';
 
 const App: Component = () => {
   return (
@@ -15,6 +12,7 @@ const App: Component = () => {
         <Route path='/' component={Home} />
         <Route path='/login' component={Login} />
         <Route path='/register' component={Register} />
+        <Route path='/c' component={Chat} />
         <Route path='*404' component={NotFound} />
       </Router>
       <Toaster
