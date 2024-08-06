@@ -1,5 +1,5 @@
 import { Component, createSignal, Match, Switch } from "solid-js"
-import { Input, Label, ShinyHeader, Button, Link } from "@/components"
+import { Input, Label, ShinyHeader, Button, Link, PasswordInput } from "@/components"
 import { useNavigate } from "@solidjs/router"
 import { toast } from "solid-sonner"
 import { z } from "zod"
@@ -74,11 +74,11 @@ const Register: Component = () => {
           </div>
           <div class='flex flex-col'>
             <Label for='password'>Password:</Label>
-            <Input id='password' type='password' value={password()} onChange={(e: any) => setPassword(e.target.value)} required />
+            <PasswordInput id='password' value={password()} onChange={(e: any) => setPassword(e.target.value)} class="w-full" required />
           </div>
           <div class="flex flex-col">
             <Label for='confirm-password'>Confirm Password:</Label>
-            <Input id='confirm-password' type='password' value={confirmPassword()} onChange={(e: any) => setConfirmPassword(e.target.value)} required />
+            <PasswordInput id='confirm-password' value={confirmPassword()} onChange={(e: any) => setConfirmPassword(e.target.value)} class="w-full" required />
           </div>
           <br />
           <div class='w-full'>
