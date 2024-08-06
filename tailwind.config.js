@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+import animatePlugin from "tailwindcss-animate";
+import corvuPlugin from "@corvu/tailwind";
+
 module.exports = {
     content: ["./src/**/*.{js,jsx,ts,tsx}"],
     theme: {
@@ -19,10 +22,10 @@ module.exports = {
                 },
             },
             fontFamily: {
-                'raleway': ['Raleway', 'sans-serif'],
-            }
+                raleway: ["Raleway", "sans-serif"],
+            },
         },
     },
-    plugins: [],
+    plugins: [animatePlugin, corvuPlugin],
 };
 

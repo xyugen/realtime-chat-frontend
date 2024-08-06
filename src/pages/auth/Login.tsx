@@ -53,9 +53,9 @@ const Login: Component = () => {
       .then((res) => {
         if (res.status === 200) {
             toast.success("Login successful");
+            localStorage.setItem("jwt_token", res.data.token);
             navigate('/c');
         }
-        // TODO: Redirect to chat
       }).catch((err) => {
         const errorMessage: string = capitalizeFirstLetter(err.response.data.error);
         toast.error(errorMessage || err.message);
