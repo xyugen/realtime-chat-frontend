@@ -6,6 +6,7 @@ import axios from "axios"
 import { config } from "@/lib/config"
 import { LoaderCircle } from "lucide-solid"
 import { capitalizeFirstLetter } from "@/lib/utils"
+import { createStore } from "solid-js/store"
 
 const loginSchema = z.object({
   username: z
@@ -19,8 +20,10 @@ const loginSchema = z.object({
 })
 
 const Login: Component = () => {
-  const [username, setUsername] = createSignal('');
-  const [password, setPassword] = createSignal('');
+  const [form, setForm] = createStore<z.infer<typeof loginSchema>>({
+    username: '',
+    password: ''
+  })
   const [isLoading, setIsLoading] = createSignal(false);
 
   const handleSubmit = (e: SubmitEvent) => {
@@ -28,8 +31,8 @@ const Login: Component = () => {
     setIsLoading(true);
 
     const result = loginSchema.safeParse({
-      username: username(),
-      password: password(),
+      username: form.username,
+      password: form.password,
     })
 
     if (!result.success) {
@@ -38,10 +41,9 @@ const Login: Component = () => {
       return;
     }
 
-    // TODO: Implement login
     axios.post(`${config.serverUrl}/login`, {
-      username: username(),
-      password: password()
+      username: form.username,
+      password: form.password
     }, {
       headers: {
         'Content-Type': 'application/json'
@@ -56,7 +58,7 @@ const Login: Component = () => {
       toast.error(errorMessage || err.message);
     }).finally(() => {
       setIsLoading(false);
-      setPassword('');
+      setForm({ password: '' });
     });
   }
 
@@ -66,11 +68,11 @@ const Login: Component = () => {
         <form action='/' onSubmit={handleSubmit} class='flex flex-col gap-2 w-full'>
           <div class='flex flex-col'>
             <Label for='username'>Username:</Label>
-            <Input id='username' type='text' value={username()} onChange={(e: any) => setUsername(e.target.value)} required />
+            <Input id='username' type='text' value={form.username} onChange={(e: any) => setForm({ ...form, username: e.target.value })} required />
           </div>
           <div class='flex flex-col'>
             <Label for='password'>Password:</Label>
-            <PasswordInput id='password' value={password()} onChange={(e: any) => setPassword(e.target.value)} class="w-full" required />
+            <PasswordInput id='password' value={form.password} onChange={(e: any) => setForm({ ...form, password: e.target.value })} class="w-full" required />
           </div>
           <br />
           <div class='w-full'>

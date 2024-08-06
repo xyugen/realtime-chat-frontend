@@ -7,6 +7,7 @@ import { config } from "@/lib/config"
 import axios from "axios"
 import { LoaderCircle } from "lucide-solid"
 import { capitalizeFirstLetter } from "@/lib/utils"
+import { createStore } from "solid-js/store"
 
 const registerSchema = z
   .object({
@@ -20,9 +21,11 @@ const registerSchema = z
   })
 
 const Register: Component = () => {
-  const [username, setUsername] = createSignal('');
-  const [password, setPassword] = createSignal('');
-  const [confirmPassword, setConfirmPassword] = createSignal('');
+  const [form, setForm] = createStore<z.infer<typeof registerSchema>>({
+    username: '',
+    password: '',
+    confirmPassword: ''
+  })
   const [isLoading, setIsLoading] = createSignal(false);
   const navigate = useNavigate();
 
@@ -31,9 +34,9 @@ const Register: Component = () => {
     setIsLoading(true);
 
     const result = registerSchema.safeParse({
-      username: username(),
-      password: password(),
-      confirmPassword: confirmPassword()
+      username: form.username,
+      password: form.password,
+      confirmPassword: form.confirmPassword
     });
 
     if (!result.success) {
@@ -43,8 +46,8 @@ const Register: Component = () => {
     }
 
     axios.post(`${config.serverUrl}/register`, {
-      username: username(),
-      password: password()
+      username: form.username,
+      password: form.password
     }, {
       headers: {
         'Content-Type': 'application/json'
@@ -59,8 +62,7 @@ const Register: Component = () => {
       toast.error(errorMessage || err.response.data);
     }).finally(() => {
       setIsLoading(false);
-      setPassword('');
-      setConfirmPassword('');
+      setForm({ password: '', confirmPassword: '' });
     })
   }
 
@@ -70,15 +72,15 @@ const Register: Component = () => {
         <form onSubmit={handleSubmit} class='flex flex-col gap-2'>
           <div class='flex flex-col'>
             <Label for='username'>Username:</Label>
-            <Input id='username' type='text' value={username()} onChange={(e: any) => setUsername(e.target.value)} required />
+            <Input id='username' type='text' value={form.username} onChange={(e: any) => setForm({ ...form, username: e.target.value })} required />
           </div>
           <div class='flex flex-col'>
             <Label for='password'>Password:</Label>
-            <PasswordInput id='password' value={password()} onChange={(e: any) => setPassword(e.target.value)} class="w-full" required />
+            <PasswordInput id='password' value={form.password} onChange={(e: any) => setForm({ ...form, password: e.target.value })} class="w-full" required />
           </div>
           <div class="flex flex-col">
             <Label for='confirm-password'>Confirm Password:</Label>
-            <PasswordInput id='confirm-password' value={confirmPassword()} onChange={(e: any) => setConfirmPassword(e.target.value)} class="w-full" required />
+            <PasswordInput id='confirm-password' value={form.confirmPassword} onChange={(e: any) => setForm({ ...form, confirmPassword: e.target.value })} class="w-full" required />
           </div>
           <br />
           <div class='w-full'>
