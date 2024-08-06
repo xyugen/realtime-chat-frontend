@@ -10,3 +10,15 @@ import { twMerge } from "tailwind-merge";
 export const cn = (...inputs: ClassValue[]): string => {
   return twMerge(clsx(inputs));
 }
+
+/**
+ * Capitalizes the first letter of a given string.
+ *
+ * @param {string} str - The input string to capitalize.
+ * @return {string} The input string with the first letter capitalized.
+ */
+export const capitalizeFirstLetter = (str: string): string => {
+  if (str.length == 0) return str;
+
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

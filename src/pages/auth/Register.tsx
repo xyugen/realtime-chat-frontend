@@ -6,6 +6,7 @@ import { z } from "zod"
 import { config } from "@/lib/config"
 import axios from "axios"
 import { LoaderCircle } from "lucide-solid"
+import { capitalizeFirstLetter } from "@/lib/utils"
 
 const registerSchema = z
   .object({
@@ -54,7 +55,8 @@ const Register: Component = () => {
         navigate("/login");
       }
     }).catch((err) => {
-      toast.error(err.response.data.error || err.response.data);
+      const errorMessage: string = capitalizeFirstLetter(err.response.data.error);
+      toast.error(errorMessage || err.response.data);
     }).finally(() => {
       setIsLoading(false);
       setPassword('');

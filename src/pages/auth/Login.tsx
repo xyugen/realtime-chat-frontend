@@ -5,6 +5,7 @@ import { toast } from "solid-sonner"
 import axios from "axios"
 import { config } from "@/lib/config"
 import { Eye, EyeOff, LoaderCircle } from "lucide-solid"
+import { capitalizeFirstLetter } from "@/lib/utils"
 
 const loginSchema = z.object({
   username: z
@@ -52,7 +53,7 @@ const Login: Component = () => {
       }
       // TODO: Redirect to chat
     }).catch((err) => {
-      const errorMessage: string = err.response.data.error;
+      const errorMessage: string = capitalizeFirstLetter(err.response.data.error);
       toast.error(errorMessage || err.message);
     }).finally(() => {
       setIsLoading(false);
