@@ -3,8 +3,8 @@ import { Route, Router } from '@solidjs/router';
 import { Toaster } from 'solid-sonner';
 
 // Pages
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';
 

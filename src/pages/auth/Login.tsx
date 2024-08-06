@@ -1,12 +1,11 @@
 import { Component, createSignal, Match, Switch } from "solid-js"
-import { Input, Label, ShinyHeader } from "../components"
+import { Input, Label, ShinyHeader, Button } from "@/components"
 import { A } from "@solidjs/router"
 import { z } from "zod"
 import { toast } from "solid-sonner"
 import axios from "axios"
 import { config } from "@/lib/config"
 import { Eye, EyeOff, LoaderCircle } from "lucide-solid"
-import Button from "../components/button"
 
 const loginSchema = z.object({
   username: z
