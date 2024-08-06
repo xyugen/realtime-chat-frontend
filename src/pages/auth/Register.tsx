@@ -6,6 +6,7 @@ import { LoaderCircle } from "lucide-solid"
 import { createStore } from "solid-js/store"
 import { register } from "@/services/api"
 import { getSession } from "@/lib/auth"
+import { useNavigate } from "@solidjs/router"
 
 const registerSchema = z
   .object({
@@ -19,13 +20,13 @@ const registerSchema = z
   })
 
 const Register: Component = () => {
+  const navigate = useNavigate();
   const [form, setForm] = createStore<z.infer<typeof registerSchema>>({
     username: '',
     password: '',
     confirmPassword: ''
   })
   const [isLoading, setIsLoading] = createSignal(false);
-  const navigate = useNavigate();
   const { user } = getSession();
 
   if (user) {

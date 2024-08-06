@@ -8,6 +8,7 @@ import { createStore } from "solid-js/store"
 import { login } from "@/services/api"
 import { useNavigate } from "@solidjs/router"
 import { getSession } from "@/lib/auth"
+import { capitalizeFirstLetter } from "@/lib/utils"
 
 const loginSchema = z.object({
   username: z
