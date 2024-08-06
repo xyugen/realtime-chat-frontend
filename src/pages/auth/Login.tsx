@@ -1,6 +1,5 @@
 import { Component, createSignal, Match, Switch } from "solid-js"
-import { Input, Label, ShinyHeader, Button } from "@/components"
-import { A } from "@solidjs/router"
+import { Input, Label, ShinyHeader, Button, Link } from "@/components"
 import { z } from "zod"
 import { toast } from "solid-sonner"
 import axios from "axios"
@@ -53,9 +52,11 @@ const Login: Component = () => {
       }
       // TODO: Redirect to chat
     }).catch((err) => {
-      toast.error(err.response.data.message || err.message);
+      const errorMessage: string = err.response.data.error;
+      toast.error(errorMessage || err.message);
     }).finally(() => {
       setIsLoading(false);
+      setPassword('');
     });
   }
 
@@ -90,7 +91,7 @@ const Login: Component = () => {
             </Button>
           </div>
         </form>
-        <p class='text-sm text-center'>Don't have an account? <A href="/register" class="text-seagull-500">Create Account</A></p>
+        <p class='text-sm text-center'>Don't have an account? <Link href="/register" class="text-seagull-500">Create Account</Link></p>
       </div>
   )
 }

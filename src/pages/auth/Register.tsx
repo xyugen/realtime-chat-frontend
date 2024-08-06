@@ -1,6 +1,6 @@
 import { Component, createSignal, Match, Switch } from "solid-js"
-import { Input, Label, ShinyHeader, Button } from "@/components"
-import { A, useNavigate } from "@solidjs/router"
+import { Input, Label, ShinyHeader, Button, Link } from "@/components"
+import { useNavigate } from "@solidjs/router"
 import { toast } from "solid-sonner"
 import { z } from "zod"
 import { config } from "@/lib/config"
@@ -57,6 +57,8 @@ const Register: Component = () => {
       toast.error(err.response.data.error || err.response.data);
     }).finally(() => {
       setIsLoading(false);
+      setPassword('');
+      setConfirmPassword('');
     })
   }
 
@@ -90,7 +92,7 @@ const Register: Component = () => {
             </Button>
           </div>
         </form>
-        <p class='text-sm text-center'>Already have an account? <A href="/login" class="text-seagull-500">Sign In</A></p>
+        <p class='text-sm text-center'>Already have an account? <Link href="/login" class="text-seagull-500">Sign In</Link></p>
       </div>
   )
 }
