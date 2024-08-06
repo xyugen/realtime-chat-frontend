@@ -7,6 +7,7 @@ import { config } from "@/lib/config"
 import { LoaderCircle } from "lucide-solid"
 import { capitalizeFirstLetter } from "@/lib/utils"
 import { createStore } from "solid-js/store"
+import { login } from "@/services/api"
 
 const loginSchema = z.object({
   username: z
@@ -41,25 +42,16 @@ const Login: Component = () => {
       return;
     }
 
-    axios.post(`${config.serverUrl}/auth/login`, {
-      username: form.username,
-      password: form.password
-    }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then((res) => {
-      if (res.status === 200) {
-        toast.success("Login successful");
-      }
-      // TODO: Redirect to chat
-    }).catch((err) => {
-      const errorMessage: string = capitalizeFirstLetter(err.response.data.error);
-      toast.error(errorMessage || err.message);
-    }).finally(() => {
-      setIsLoading(false);
-      setForm({ password: '' });
-    });
+    login({ username: form.username, password: form.password })
+      .then((res) => {
+          if (res.status === 200) {
+              toast.success("Login successful");
+          }
+          // TODO: Redirect to chat
+      }).catch((err) => {
+          const errorMessage: string = capitalizeFirstLetter(err.response.data.error);
+          toast.error(errorMessage || err.message);
+      });
   }
 
   return (

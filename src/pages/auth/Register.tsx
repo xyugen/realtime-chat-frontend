@@ -8,6 +8,7 @@ import axios from "axios"
 import { LoaderCircle } from "lucide-solid"
 import { capitalizeFirstLetter } from "@/lib/utils"
 import { createStore } from "solid-js/store"
+import { register } from "@/services/api"
 
 const registerSchema = z
   .object({
@@ -45,25 +46,19 @@ const Register: Component = () => {
       return;
     }
 
-    axios.post(`${config.serverUrl}/auth/register`, {
-      username: form.username,
-      password: form.password
-    }, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then((res) => {
-      if (res.status === 201) {
-        toast.success("Account created successfully. Please login.");
-        navigate("/login");
-      }
-    }).catch((err) => {
-      const errorMessage: string = capitalizeFirstLetter(err.response.data.error);
-      toast.error(errorMessage || err.response.data);
-    }).finally(() => {
-      setIsLoading(false);
-      setForm({ password: '', confirmPassword: '' });
-    })
+    register({ username: form.username, password: form.password })
+      .then((res) => {
+        if (res.status === 201) {
+          toast.success("Account created successfully. Please login.");
+          navigate("/login");
+        }
+      }).catch((err) => {
+        const errorMessage: string = capitalizeFirstLetter(err.response.data.error);
+        toast.error(errorMessage || err.response.data);
+      }).finally(() => {
+        setIsLoading(false);
+        setForm({ password: '', confirmPassword: '' });
+      })
   }
 
   return (
