@@ -44,13 +44,16 @@ const Login: Component = () => {
 
     login({ username: form.username, password: form.password })
       .then((res) => {
-          if (res.status === 200) {
-              toast.success("Login successful");
-          }
-          // TODO: Redirect to chat
+        if (res.status === 200) {
+            toast.success("Login successful");
+        }
+        // TODO: Redirect to chat
       }).catch((err) => {
-          const errorMessage: string = capitalizeFirstLetter(err.response.data.error);
-          toast.error(errorMessage || err.message);
+        const errorMessage: string = capitalizeFirstLetter(err.response.data.error);
+        toast.error(errorMessage || err.message);
+      }).finally(() => {
+        setIsLoading(false);
+        setForm({ password: '' });
       });
   }
 
