@@ -8,6 +8,7 @@ import { LoaderCircle } from "lucide-solid"
 import { capitalizeFirstLetter } from "@/lib/utils"
 import { createStore } from "solid-js/store"
 import { login } from "@/services/api"
+import { useNavigate } from "@solidjs/router"
 
 const loginSchema = z.object({
   username: z
@@ -21,6 +22,7 @@ const loginSchema = z.object({
 })
 
 const Login: Component = () => {
+  const navigate = useNavigate();
   const [form, setForm] = createStore<z.infer<typeof loginSchema>>({
     username: '',
     password: ''
@@ -46,6 +48,7 @@ const Login: Component = () => {
       .then((res) => {
         if (res.status === 200) {
             toast.success("Login successful");
+            navigate('/c');
         }
         // TODO: Redirect to chat
       }).catch((err) => {
