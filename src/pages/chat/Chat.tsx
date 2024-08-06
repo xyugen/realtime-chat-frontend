@@ -2,6 +2,7 @@ import { Input } from "@/components"
 import { Component, createSignal } from "solid-js"
 import Resizable from '@corvu/resizable'
 import { makePersisted } from '@solid-primitives/storage'
+import ChatItem from "./components/ChatItem"
 
 const Chat: Component = () => {
   const [sizes, setSizes] = makePersisted(createSignal<number[]>([]), {
@@ -20,17 +21,11 @@ const Chat: Component = () => {
         <hr class="border-seagull-200" />
 
         {/* Chats */}
-        <div class="flex flex-row">
+        <div class="flex flex-col">
           {/* Chat */}
-          <div class="w-full p-4 max-h-20 h-20 border-b border-seagull-200 hover:bg-seagull-100/30 active:bg-seagull-100/45 cursor-pointer select-none">
-            <div class="flex justify-between">
-              <h2 class="text-base">Anthony</h2>
-              <small class="text-gray-500">13:22</small>
-            </div>
-            <p class="text-sm text-gray-500 overflow-hidden text-ellipsis h-6">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur error inventore earum amet, quibusdam iste voluptatem explicabo quaerat nam delectus dignissimos, pariatur autem optio.
-            </p>
-          </div>
+          <ChatItem name="John Doe" time="12:00">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet architecto recusandae at vitae obcaecati reprehenderit. Ratione quas magni quam, fuga nobis atque dolore alias?
+          </ChatItem>
         </div>
       </Resizable.Panel>
 
