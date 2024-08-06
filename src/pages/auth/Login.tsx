@@ -9,6 +9,7 @@ import { capitalizeFirstLetter } from "@/lib/utils"
 import { createStore } from "solid-js/store"
 import { login } from "@/services/api"
 import { useNavigate } from "@solidjs/router"
+import { getSession } from "@/lib/auth"
 
 const loginSchema = z.object({
   username: z
@@ -28,6 +29,11 @@ const Login: Component = () => {
     password: ''
   })
   const [isLoading, setIsLoading] = createSignal(false);
+  const { user } = getSession();
+
+  if (user) {
+    navigate('/c', { replace: true });
+  }
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();

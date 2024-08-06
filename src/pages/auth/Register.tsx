@@ -9,6 +9,7 @@ import { LoaderCircle } from "lucide-solid"
 import { capitalizeFirstLetter } from "@/lib/utils"
 import { createStore } from "solid-js/store"
 import { register } from "@/services/api"
+import { getSession } from "@/lib/auth"
 
 const registerSchema = z
   .object({
@@ -29,6 +30,11 @@ const Register: Component = () => {
   })
   const [isLoading, setIsLoading] = createSignal(false);
   const navigate = useNavigate();
+  const { user } = getSession();
+
+  if (user) {
+    navigate('/c', { replace: true });
+  }
 
   const handleSubmit = (e: SubmitEvent) => {
     e.preventDefault();

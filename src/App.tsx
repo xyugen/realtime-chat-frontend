@@ -1,4 +1,4 @@
-import { lazy, type Component } from 'solid-js';
+import { lazy, onMount, type Component } from 'solid-js';
 import { Router } from '@solidjs/router';
 import { Toaster } from 'solid-sonner';
 
@@ -9,7 +9,11 @@ const routes = [
   { path: '/', component: Home },
   { path: '/login', component: lazy(() => import('./pages/auth/Login')) },
   { path: '/register', component: lazy(() => import('./pages/auth/Register')) },
-  { path: '/c', component: lazy(() => import('./pages/chat/Chat')) },
+  { path: '/c', component: lazy(() => import('./pages/ProtectedRoute')),
+    children: [
+      { path: '/', component: lazy(() => import('./pages/chat/Chat')) }
+    ] 
+  },
   { path: '/*404', component: lazy(() => import('./pages/NotFound')) },
 ]
 
