@@ -45,7 +45,7 @@ const Register: Component = () => {
       return;
     }
 
-    axios.post(`${config.serverUrl}/register`, {
+    axios.post(`${config.serverUrl}/auth/register`, {
       username: form.username,
       password: form.password
     }, {

@@ -41,7 +41,7 @@ const Login: Component = () => {
       return;
     }
 
-    axios.post(`${config.serverUrl}/login`, {
+    axios.post(`${config.serverUrl}/auth/login`, {
       username: form.username,
       password: form.password
     }, {
