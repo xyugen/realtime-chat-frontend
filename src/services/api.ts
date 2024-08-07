@@ -1,5 +1,6 @@
+import { getSession } from "@/lib/auth";
 import { config } from "@/lib/config";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 export const login = async (props: Auth) => {
     const response = axios.post(`${config.SERVER_URL}/auth/login`, {
@@ -38,8 +39,19 @@ export const getConversations = async (token: string) => {
     return response;
 }
 
-export const getConversationById = async (id: number): Promise<Conversation> => {
-    return await axios.get(`${config.SERVER_URL}/conversations/${id}`);
+export const getConversationById = async (id: number): Promise<AxiosResponse<Conversation>> => {
+    const { user } = getSession();
+
+    if (!user) {
+        throw new Error('permission denied');
+    }
+
+    return await axios.get(`${config.SERVER_URL}/conversation/${id}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${user}`
+        }
+    });
 }
 
 export const getUserById = async (id: number): Promise<User> => {
