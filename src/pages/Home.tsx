@@ -1,10 +1,15 @@
 import { ShinyHeader } from "@/components"
 import Button from "@/components/button"
+import { getSession } from "@/lib/auth"
 import { A, useNavigate } from "@solidjs/router"
 import { Component } from "solid-js"
 
 const Home: Component = () => {
   const navigate = useNavigate();
+  const { user } = getSession();
+
+  if (user) navigate("/c");
+
 
   const handleLogin = () => {
     navigate("/login")

@@ -55,7 +55,7 @@ const Sidebar: Component = () => {
         </div>
 
         <div class="flex flex-row justify-between gap-4 p-4 border-t border-seagull-200">
-          <Button variant={"default"} class="w-1/4" onClick={handleLogout}>
+          <Button variant={"default"} class="w-1/4" onClick={() => navigate("/chat/new")}>
             <MessageSquarePlus />
           </Button>
           <Button variant={"destructive"} class="w-1/6" onClick={handleLogout}>
