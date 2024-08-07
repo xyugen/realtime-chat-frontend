@@ -40,3 +40,7 @@ export const getSession = (): Session => {
         };
     }
 }
+
+export const clearSession = () => {
+    localStorage.removeItem("jwt_token");
+}
