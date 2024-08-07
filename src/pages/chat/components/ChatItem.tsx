@@ -1,4 +1,5 @@
 import { getConversationById, getUserById } from "@/services/api";
+import { useNavigate } from "@solidjs/router";
 import { children, Component, createSignal, JSX, onMount } from "solid-js"
 
 interface ChatItemProps {
@@ -10,6 +11,7 @@ interface ChatItemProps {
 
 const ChatItem: Component<ChatItemProps> = (props) => {
     const safeChildren = children(() => props.children);
+    const navigate = useNavigate();
     const [name, setName] = createSignal("")
 
     onMount(() => {
@@ -23,6 +25,7 @@ const ChatItem: Component<ChatItemProps> = (props) => {
 
     const handleClick = () => {
         console.log(props.id)
+        navigate(`/c/${props.id}`)
     }
 
     return (

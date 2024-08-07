@@ -2,7 +2,7 @@ import { config } from "@/lib/config";
 import axios from "axios";
 
 export const login = async (props: Auth) => {
-    const response = axios.post(`${config.serverUrl}/auth/login`, {
+    const response = axios.post(`${config.SERVER_URL}/auth/login`, {
         username: props.username,
         password: props.password
     }, {
@@ -15,7 +15,7 @@ export const login = async (props: Auth) => {
 }
 
 export const register = async (props: Auth) => {
-    const response = axios.post(`${config.serverUrl}/auth/register`, {
+    const response = axios.post(`${config.SERVER_URL}/auth/register`, {
         username: props.username,
         password: props.password
     }, {
@@ -28,7 +28,7 @@ export const register = async (props: Auth) => {
 }
 
 export const getConversations = async (token: string) => {
-    const response = await axios.get(`${config.serverUrl}/conversations`, {
+    const response = await axios.get(`${config.SERVER_URL}/conversations`, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -39,9 +39,9 @@ export const getConversations = async (token: string) => {
 }
 
 export const getConversationById = async (id: number): Promise<Conversation> => {
-    return await axios.get(`${config.serverUrl}/conversations/${id}`);
+    return await axios.get(`${config.SERVER_URL}/conversations/${id}`);
 }
 
 export const getUserById = async (id: number): Promise<User> => {
-    return await axios.get(`${config.serverUrl}/users/${id}`);
+    return await axios.get(`${config.SERVER_URL}/users/${id}`);
 }

@@ -1,3 +1,3 @@
 export interface Config {
-    serverUrl: string
+    SERVER_URL: string
 }
