@@ -28,7 +28,13 @@ export const register = async (props: Auth) => {
     return response;
 }
 
-export const getConversations = async (token: string) => {
+export const getConversations = async () => {
+    const { token } = getSession();
+
+    if (!token) {
+        throw new Error('permission denied');
+    }
+
     const response = await axios.get(`${config.SERVER_URL}/conversations`, {
         headers: {
             'Content-Type': 'application/json',
@@ -40,20 +46,20 @@ export const getConversations = async (token: string) => {
 }
 
 export const getConversationById = async (id: number): Promise<AxiosResponse<Conversation>> => {
-    const { user } = getSession();
-
-    if (!user) {
+    const { token } = getSession();
+    
+    if (!token) {
         throw new Error('permission denied');
     }
 
     return await axios.get(`${config.SERVER_URL}/conversation/${id}`, {
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user}`
+            'Authorization': `Bearer ${token}`
         }
     });
 }
 
-export const getUserById = async (id: number): Promise<User> => {
-    return await axios.get(`${config.SERVER_URL}/users/${id}`);
+export const getUserById = async (id: number): Promise<AxiosResponse<User>> => {
+    return await axios.get(`${config.SERVER_URL}/user/${id}`);
 }

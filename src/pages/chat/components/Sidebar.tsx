@@ -12,12 +12,13 @@ const Sidebar: Component = () => {
 
   onMount(() => {
     if (!user) return;
-    getConversations(user)
+    getConversations()
       .then((res) => {
-        const data: Conversation[] = res.data;
+        const data = res.data;
         setConversations(data);
       })
       .catch((err) => {
+        console.log(err);
         toast.error(err.response.data.error);
       })
   })
@@ -34,17 +35,10 @@ const Sidebar: Component = () => {
         {/* Chats */}
         <div class="flex flex-col">
           {/* Chat */}
-          {/* {conversations().map((conversation) => (
-            <ChatItem
-              name={conversation.name}
-              time={conversation.updatedAt}
-              id={conversation.id}
-            />
-          ))} */}
           {conversations().map((conversation) => (
             <ChatItem
               id={conversation.id}
-              name={conversation.name}
+              // name={conversation.name}
               time={conversation.updatedAt}
             />
           ))
