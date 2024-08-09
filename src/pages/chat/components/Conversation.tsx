@@ -1,7 +1,8 @@
 import { getSession } from "@/lib/auth";
 import { getConversationById, getUserById } from "@/services/api";
 import { useParams } from "@solidjs/router"
-import { Component, createEffect, createSignal } from "solid-js"
+import { LoaderCircle } from "lucide-solid";
+import { Component, createEffect, createSignal, Match, Show, Switch } from "solid-js"
 import { toast } from "solid-sonner";
 
 interface ConversationParams {
@@ -13,6 +14,7 @@ const Conversation: Component = () => {
     const params = useParams<ConversationParams>();
     const [conversation, setConversation] = createSignal<Conversation>();
     const [otherUser, setOtherUser] = createSignal<User>();
+    const [isLoading, setIsLoading] = createSignal<Boolean>(false);
 
     // Determine the other user ID
     const otherUserId = () => {
@@ -27,6 +29,8 @@ const Conversation: Component = () => {
 
     createEffect(async () => {
         const conversationId = parseInt(params.id!);
+        setIsLoading(true);
+
         try {
             const res = await getConversationById(conversationId);
             setConversation(res.data);
@@ -35,6 +39,8 @@ const Conversation: Component = () => {
             setOtherUser(userRes.data);
         } catch (err: any) {
             toast.error(err.message);
+        } finally {
+            setIsLoading(false);
         }
     });
 
@@ -45,7 +51,16 @@ const Conversation: Component = () => {
                     <h2 class="text-base">{otherUser()?.username}</h2>
                 </div>
             </div>
-            
+            <Switch>
+                <Match when={isLoading()}>
+                    <div class="size-full flex justify-center items-center">
+                        <LoaderCircle class="w-8 h-8 mx-auto text-seagull-500 animate-spin" />
+                    </div>
+                </Match>
+                <Match when={!isLoading()}>
+                    <p>Test</p>
+                </Match>
+            </Switch>
         </div>
     )
 }
