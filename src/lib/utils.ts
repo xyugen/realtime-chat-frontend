@@ -22,3 +22,23 @@ export const capitalizeFirstLetter = (str: string): string => {
 
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+/**
+ * Formats the given time string into a localized time format with hours and minutes.
+ *
+ * @param {string} timeString - The input time string to be formatted.
+ * @return {string} The formatted time string based on the specified options.
+ */
+export const formatTime = (timeString: string): string => {
+  const date = new Date(timeString);
+
+  const options: Intl.DateTimeFormatOptions = {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  };
+
+  const formatter = new Intl.DateTimeFormat('en-US', options);
+
+  return formatter.format(date);
+}
