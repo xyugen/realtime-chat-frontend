@@ -1,7 +1,7 @@
 import { getSession } from "@/lib/auth";
 import { getConversationById, getUserById } from "@/services/api";
 import { useParams } from "@solidjs/router"
-import { Component, createSignal, onMount } from "solid-js"
+import { Component, createEffect, createSignal } from "solid-js"
 import { toast } from "solid-sonner";
 
 interface ConversationParams {
@@ -10,12 +10,9 @@ interface ConversationParams {
 }
 
 const Conversation: Component = () => {
-    const { user } = getSession();
     const params = useParams<ConversationParams>();
     const [conversation, setConversation] = createSignal<Conversation>();
     const [otherUser, setOtherUser] = createSignal<User>();
-
-    const conversationId = parseInt(params.id!);
 
     // Determine the other user ID
     const otherUserId = () => {
@@ -28,23 +25,18 @@ const Conversation: Component = () => {
         return null;
     };
 
-    onMount(async () => {
-        await getConversationById(conversationId)
-            .then((res) => {
-                setConversation(res.data);
-            })
-            .catch((err) => {
-                toast.error(err.message)
-            });
-        
-        await getUserById(otherUserId()!)
-            .then((res) => {
-                setOtherUser(res.data);
-            })
-            .catch((err) => {
-                toast.error(err.message)
-            });
-    })
+    createEffect(async () => {
+        const conversationId = parseInt(params.id!);
+        try {
+            const res = await getConversationById(conversationId);
+            setConversation(res.data);
+            
+            const userRes = await getUserById(otherUserId()!);
+            setOtherUser(userRes.data);
+        } catch (err: any) {
+            toast.error(err.message);
+        }
+    });
 
     return (
         <div class="size-full">
