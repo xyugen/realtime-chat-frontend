@@ -1,5 +1,5 @@
 import { Button, Input, Modal } from "@/components";
-import { Component, createEffect, createSignal, onMount } from "solid-js";
+import { Component, createSignal, onMount } from "solid-js";
 import Resizable from "@corvu/resizable";
 import ChatItem from "./ChatItem";
 import { getConversations } from "@/services/api";
@@ -13,15 +13,16 @@ const Sidebar: Component = () => {
   const navigate = useNavigate();
   const [conversations, setConversations] = createSignal<Conversation[]>([])
   const [showModal, setShowModal] = createSignal<Boolean>(false);
+  const [search, setSearch] = createSignal<string>("");
   const { user } = getSession();
 
   onMount(() => {
     getAllConversations();
   });
 
-  const getAllConversations = () => {
+  const getAllConversations = (username?: string) => {
     if (!user) return;
-    getConversations()
+    getConversations(username)
       .then((res) => {
         const data = res.data;
         setConversations(data);
@@ -36,6 +37,19 @@ const Sidebar: Component = () => {
     setShowModal(true);
   }
 
+  const handleSearch = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    setSearch(target.value);
+
+    // TODO: implement search
+    if (!target.value.trim()) {
+      getAllConversations();
+      return;
+    }
+
+    getAllConversations(target.value);
+  }
+
   const handleLogout = () => {
     clearSession();
     navigate("/", { replace: true });
@@ -45,7 +59,7 @@ const Sidebar: Component = () => {
       <Resizable.Panel initialSize={0.3} minSize={0.2} maxSize={0.5} class="flex flex-col bg-white border-r border-seagull-200">
         {/* Search */}
         <div class="p-4">
-          <Input id="search" class="w-full" type="text" placeholder="Search" value="" />
+          <Input id="search" class="w-full" type="text" placeholder="Search" value={search()} onInput={handleSearch} />
         </div>
 
         <hr class="border-seagull-200" />
@@ -56,7 +70,6 @@ const Sidebar: Component = () => {
           {conversations().map((conversation) => (
             <ChatItem
               id={conversation.id}
-              // name={conversation.name}
               time={conversation.updatedAt}
             />
           ))

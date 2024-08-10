@@ -50,6 +50,7 @@ const CreateConversationForm: Component<CreateConversationFormProps> = (props) =
         toast.error(error);
       });
 
+    setResults([]);
     setForm({ username: "", error: "" });
   };
 

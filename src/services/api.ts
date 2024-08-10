@@ -49,14 +49,14 @@ export const createConversation = async (username: string) => {
     return response;
 }
 
-export const getConversations = async () => {
+export const getConversations = async (username: string = "") => {
     const { token } = getSession();
 
     if (!token) {
         throw new Error('permission denied');
     }
-
-    const response = await axios.get(`${config.SERVER_URL}/conversations`, {
+    
+    const response = await axios.get(`${config.SERVER_URL}/conversations?username=${username}`, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`

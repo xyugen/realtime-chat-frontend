@@ -16,14 +16,15 @@ const Conversation: Component = () => {
     const [otherUser, setOtherUser] = createSignal<User>();
     const [isLoading, setIsLoading] = createSignal<Boolean>(false);
 
-    // Determine the other user ID
-    const otherUserId = () => {
+    // Determine the other user
+    const getOtherUser = () => {
         const { user } = getSession();
-
+        
         const convo = conversation();
         if (convo) {
-            return convo.user1Id === user?.userId ? convo.user2Id : convo.user1Id;
+            return convo.user1?.id === user?.userId ? convo.user2 : convo.user1;
         }
+
         return null;
     };
 
@@ -35,8 +36,7 @@ const Conversation: Component = () => {
             const res = await getConversationById(conversationId);
             setConversation(res.data);
             
-            const userRes = await getUserById(otherUserId()!);
-            setOtherUser(userRes.data);
+            setOtherUser(getOtherUser()!);
         } catch (err: any) {
             toast.error(err.message);
         } finally {
