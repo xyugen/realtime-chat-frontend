@@ -1,4 +1,4 @@
-import { Button, Input } from "@/components";
+import { Button, Input, Label, Modal } from "@/components";
 import { Component, createSignal, onMount } from "solid-js";
 import Resizable from "@corvu/resizable";
 import ChatItem from "./ChatItem";
@@ -11,6 +11,7 @@ import { useNavigate } from "@solidjs/router";
 const Sidebar: Component = () => {
   const navigate = useNavigate();
   const [conversations, setConversations] = createSignal<Conversation[]>([])
+  const [showModal, setShowModal] = createSignal<Boolean>(false);
   const { user } = getSession();
 
   onMount(() => {
@@ -24,7 +25,11 @@ const Sidebar: Component = () => {
         console.log(err);
         toast.error(err.response.data.error);
       })
-  })
+  });
+
+  const handleCreateConversation = () => {
+    setShowModal(true);
+  }
 
   const handleLogout = () => {
     clearSession();
@@ -55,13 +60,24 @@ const Sidebar: Component = () => {
         </div>
 
         <div class="flex flex-row justify-between gap-4 p-4 border-t border-seagull-200">
-          <Button variant={"default"} class="w-1/4" onClick={() => navigate("/chat/new")}>
+          <Button variant={"default"} class="w-1/4" onClick={handleCreateConversation}>
             <MessageSquarePlus />
           </Button>
           <Button variant={"destructive"} class="w-1/6" onClick={handleLogout}>
             <LogOut />
           </Button>
         </div>
+
+        <Modal show={showModal()} onClose={() => setShowModal(false)}>
+          <h1 class="text-lg font-semibold mb-2">Create Conversation</h1>
+          <form class="flex flex-col gap-2">
+            <div class="flex flex-row items-center gap-2">
+              <Label for="name">Username</Label>
+              <Input id="name" class="w-full" type="text" placeholder="@username" value="" />
+            </div>
+            <Button type="submit" class="w-full">Create</Button>
+          </form>
+        </Modal>
       </Resizable.Panel>
   )
 }

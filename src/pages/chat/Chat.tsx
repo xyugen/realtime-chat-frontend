@@ -27,7 +27,6 @@ const Chat: Component<ChatProps> = (props) => {
       <Resizable.Panel initialSize={0.7} minSize={0.2} maxSize={0.8}>
         {props.children}
       </Resizable.Panel>
-      
       {/* <Resizable.Panel>
 
       </Resizable.Panel> */}
