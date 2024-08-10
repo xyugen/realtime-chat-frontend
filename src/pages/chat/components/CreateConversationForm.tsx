@@ -10,8 +10,7 @@ import { z } from "zod"
 // must not contain special characters
 const username = z
   .string()
-  .regex(/^@.*/, { message: "Username must start with @" })
-  .min(5, { message: "Username must be at least 4 characters" })
+  .min(4, { message: "Username must be at least 4 characters" })
   .regex(/^[@a-zA-Z0-9_]+$/, { message: "Username must only contain alphanumeric characters and underscores" });
 
 interface CreateConversationFormProps {
@@ -33,7 +32,11 @@ const CreateConversationForm: Component<CreateConversationFormProps> = (props) =
       return
     }
 
-    const safeUsername = form.username.split("@")[1]
+    let safeUsername = form.username
+    if (form.username.startsWith("@")) {
+      safeUsername.split("@")[1];
+    }
+    
     createConversation(safeUsername)
       .then(() => {
         if (props.onCreate) props.onCreate();
