@@ -28,6 +28,27 @@ export const register = async (props: Auth) => {
     return response;
 }
 
+export const createConversation = async (username: string) => {
+    const { token } = getSession();
+
+    if (!token) {
+        throw new Error('permission denied');
+    }
+    
+    const id = await getUserByUsername(username).then(res => res.data.id);
+
+    const response = await axios.post(`${config.SERVER_URL}/conversation/new`, {
+        user2Id: id
+    }, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    return response;
+}
+
 export const getConversations = async () => {
     const { token } = getSession();
 
@@ -62,4 +83,8 @@ export const getConversationById = async (id: number): Promise<AxiosResponse<Con
 
 export const getUserById = async (id: number): Promise<AxiosResponse<User>> => {
     return await axios.get(`${config.SERVER_URL}/user/${id}`);
+}
+
+export const getUserByUsername = async (username: string): Promise<AxiosResponse<User>> => {
+    return await axios.get(`${config.SERVER_URL}/user/u/${username}`);
 }
