@@ -1,5 +1,5 @@
 import { Button, Input, Modal } from "@/components";
-import { Component, createSignal, onMount } from "solid-js";
+import { Component, createEffect, createSignal, onMount } from "solid-js";
 import Resizable from "@corvu/resizable";
 import ChatItem from "./ChatItem";
 import { getConversations } from "@/services/api";
@@ -16,6 +16,10 @@ const Sidebar: Component = () => {
   const { user } = getSession();
 
   onMount(() => {
+    getAllConversations();
+  });
+
+  const getAllConversations = () => {
     if (!user) return;
     getConversations()
       .then((res) => {
@@ -26,7 +30,7 @@ const Sidebar: Component = () => {
         console.log(err);
         toast.error(err.response.data.error);
       })
-  });
+    }
 
   const handleCreateConversation = () => {
     setShowModal(true);
@@ -70,7 +74,7 @@ const Sidebar: Component = () => {
 
           <Modal show={showModal()} onClose={() => setShowModal(false)}>
             <h1 class="text-lg font-semibold mb-2">Create Conversation</h1>
-            <CreateConversationForm />
+            <CreateConversationForm onCreate={getAllConversations}/>
           </Modal>
         </div>
       </Resizable.Panel>

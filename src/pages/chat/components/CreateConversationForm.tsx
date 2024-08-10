@@ -1,6 +1,7 @@
 import { Button, Input, Label } from "@/components"
 import { capitalizeFirstLetter, cn } from "@/lib/utils"
 import { createConversation } from "@/services/api"
+import { Component } from "solid-js"
 import { createStore } from "solid-js/store"
 import { toast } from "solid-sonner"
 import { z } from "zod"
@@ -13,7 +14,11 @@ const username = z
   .min(5, { message: "Username must be at least 4 characters" })
   .regex(/^[@a-zA-Z0-9_]+$/, { message: "Username must only contain alphanumeric characters and underscores" });
 
-const CreateConversationForm = () => {
+interface CreateConversationFormProps {
+  onCreate?: () => void
+}
+
+const CreateConversationForm: Component<CreateConversationFormProps> = (props) => {
   const [form, setForm] = createStore({
     username: "",
     error: "",
@@ -31,7 +36,9 @@ const CreateConversationForm = () => {
     const safeUsername = form.username.split("@")[1]
     createConversation(safeUsername)
       .then(() => {
-        toast.success("Conversation created!")
+        if (props.onCreate) props.onCreate();
+
+        toast.success("Conversation created!");
       })
       .catch((err) => {
         const error = capitalizeFirstLetter(err.response.data.error);
