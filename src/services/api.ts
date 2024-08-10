@@ -88,3 +88,7 @@ export const getUserById = async (id: number): Promise<AxiosResponse<User>> => {
 export const getUserByUsername = async (username: string): Promise<AxiosResponse<User>> => {
     return await axios.get(`${config.SERVER_URL}/user/u/${username}`);
 }
+
+export const searchUser = async (username: string): Promise<AxiosResponse<User[]>> => {
+    return await axios.get(`${config.SERVER_URL}/user/search?q=${username}`);
+}
