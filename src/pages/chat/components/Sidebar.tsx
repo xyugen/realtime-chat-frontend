@@ -1,4 +1,4 @@
-import { Button, Input, Label, Modal } from "@/components";
+import { Button, Input, Modal } from "@/components";
 import { Component, createSignal, onMount } from "solid-js";
 import Resizable from "@corvu/resizable";
 import ChatItem from "./ChatItem";
@@ -7,6 +7,7 @@ import { clearSession, getSession } from "@/lib/auth";
 import { toast } from "solid-sonner";
 import { LogOut, MessageSquarePlus } from "lucide-solid";
 import { useNavigate } from "@solidjs/router";
+import CreateConversationForm from "./CreateConversationForm";
 
 const Sidebar: Component = () => {
   const navigate = useNavigate();
@@ -66,18 +67,12 @@ const Sidebar: Component = () => {
           <Button variant={"destructive"} class="w-1/6" onClick={handleLogout}>
             <LogOut />
           </Button>
-        </div>
 
-        <Modal show={showModal()} onClose={() => setShowModal(false)}>
-          <h1 class="text-lg font-semibold mb-2">Create Conversation</h1>
-          <form class="flex flex-col gap-2">
-            <div class="flex flex-row items-center gap-2">
-              <Label for="name">Username</Label>
-              <Input id="name" class="w-full" type="text" placeholder="@username" value="" />
-            </div>
-            <Button type="submit" class="w-full">Create</Button>
-          </form>
-        </Modal>
+          <Modal show={showModal()} onClose={() => setShowModal(false)}>
+            <h1 class="text-lg font-semibold mb-2">Create Conversation</h1>
+            <CreateConversationForm />
+          </Modal>
+        </div>
       </Resizable.Panel>
   )
 }
