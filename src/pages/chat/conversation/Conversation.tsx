@@ -1,6 +1,7 @@
 import { Button, Input } from "@/components";
 import { getSession } from "@/lib/auth";
-import { getConversationById } from "@/services/api";
+import { cn } from "@/lib/utils";
+import { getConversationById, getMessages } from "@/services/api";
 import { useParams } from "@solidjs/router"
 import { LoaderCircle, SendHorizontal } from "lucide-solid";
 import { Component, createEffect, createSignal, Match, Switch } from "solid-js"
@@ -14,6 +15,7 @@ interface ConversationParams {
 const Conversation: Component = () => {
     const params = useParams<ConversationParams>();
     const [conversation, setConversation] = createSignal<Conversation>();
+    const [messages, setMessages] = createSignal<Message[]>([]);
     const [otherUser, setOtherUser] = createSignal<User>();
     const [isLoading, setIsLoading] = createSignal<Boolean>(false);
 
@@ -36,6 +38,9 @@ const Conversation: Component = () => {
         try {
             const conversationRes = await getConversationById(conversationId);
             setConversation(conversationRes.data);
+
+            const messageRes = await getMessages(conversationId);
+            setMessages(messageRes.data);
             
             setOtherUser(getOtherUser()!);
         } catch (err: any) {
@@ -47,7 +52,7 @@ const Conversation: Component = () => {
 
     return (
         <div class="flex flex-col size-full items-center">
-            <div class="w-full p-4 bg-white border-b border-seagull-200">
+            <div class="sticky top-0 w-full p-4 bg-white border-b border-seagull-200">
                 <div class="flex justify-between">
                     <h2 class="text-base">{otherUser()?.username}</h2>
                 </div>
@@ -61,7 +66,16 @@ const Conversation: Component = () => {
                             </div>
                         </Match>
                         <Match when={!isLoading()}>
-                            <p>Test</p>
+                            <div class="size-full flex flex-col gap-2">
+                                {messages().map((message) => (
+                                    <div class={getOtherUser()?.id !== message.sender?.id ? "self-end" : ""}>
+                                        <small class="text-gray-500">{message.sender!.username}</small>
+                                        <div class={cn("w-fit p-3 rounded", getOtherUser()?.id !== message.sender?.id ? "bg-seagull-400" : "bg-gray-300")}>
+                                            <p class="text-black">{message.content}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </Match>
                     </Switch>
                 </div>

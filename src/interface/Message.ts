@@ -5,5 +5,6 @@ interface Message {
   deletedAt?: string,
   conversationId: number
   senderId: number,
+  sender?: User
   content?: string,
 }
