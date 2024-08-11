@@ -1,7 +1,8 @@
+import { Button, Input } from "@/components";
 import { getSession } from "@/lib/auth";
 import { getConversationById, getUserById } from "@/services/api";
 import { useParams } from "@solidjs/router"
-import { LoaderCircle } from "lucide-solid";
+import { LoaderCircle, SendHorizontal } from "lucide-solid";
 import { Component, createEffect, createSignal, Match, Show, Switch } from "solid-js"
 import { toast } from "solid-sonner";
 
@@ -45,22 +46,32 @@ const Conversation: Component = () => {
     });
 
     return (
-        <div class="size-full">
+        <div class="flex flex-col size-full items-center">
             <div class="w-full p-4 bg-white border-b border-seagull-200">
                 <div class="flex justify-between">
                     <h2 class="text-base">{otherUser()?.username}</h2>
                 </div>
             </div>
-            <Switch>
-                <Match when={isLoading()}>
-                    <div class="size-full flex justify-center items-center">
-                        <LoaderCircle class="w-8 h-8 mx-auto text-seagull-500 animate-spin" />
-                    </div>
-                </Match>
-                <Match when={!isLoading()}>
-                    <p>Test</p>
-                </Match>
-            </Switch>
+            <div class="flex-1 flex flex-col w-1/2">
+                <div class="flex-1">
+                    <Switch>
+                        <Match when={isLoading()}>
+                            <div class="size-full flex justify-center items-center">
+                                <LoaderCircle class="w-8 h-8 mx-auto text-seagull-500 animate-spin" />
+                            </div>
+                        </Match>
+                        <Match when={!isLoading()}>
+                            <p>Test</p>
+                        </Match>
+                    </Switch>
+                </div>
+                <form class="w-full mb-4 bg-white p-3 flex flex-row gap-2 rounded-md shadow" onSubmit={(e) => e.preventDefault()}>
+                    <Input class="w-full" placeholder="Type a message..." value=""/>
+                    <Button type="submit" class="w-fit p-2">
+                        <SendHorizontal />
+                    </Button>
+                </form>
+            </div>
         </div>
     )
 }
