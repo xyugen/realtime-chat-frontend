@@ -1,9 +1,9 @@
 import { Button, Input } from "@/components";
 import { getSession } from "@/lib/auth";
-import { getConversationById, getUserById } from "@/services/api";
+import { getConversationById } from "@/services/api";
 import { useParams } from "@solidjs/router"
 import { LoaderCircle, SendHorizontal } from "lucide-solid";
-import { Component, createEffect, createSignal, Match, Show, Switch } from "solid-js"
+import { Component, createEffect, createSignal, Match, Switch } from "solid-js"
 import { toast } from "solid-sonner";
 
 interface ConversationParams {
@@ -34,8 +34,8 @@ const Conversation: Component = () => {
         setIsLoading(true);
 
         try {
-            const res = await getConversationById(conversationId);
-            setConversation(res.data);
+            const conversationRes = await getConversationById(conversationId);
+            setConversation(conversationRes.data);
             
             setOtherUser(getOtherUser()!);
         } catch (err: any) {

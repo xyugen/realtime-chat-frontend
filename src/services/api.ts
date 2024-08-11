@@ -103,7 +103,7 @@ export const createMessage = async (props: { conversationId: number, content: st
         throw new Error('permission denied');
     }
 
-    const response = await axios.post(`${config.SERVER_URL}/conversation/${props.conversationId}/message/new`, {
+    const response = await axios.post(`${config.SERVER_URL}/conversation/${props.conversationId}/messages/new`, {
         content: props.content
     }, {
         headers: {
@@ -115,13 +115,13 @@ export const createMessage = async (props: { conversationId: number, content: st
     return response;
 }
 
-export const getMessages = async (conversationId: number) => {
+export const getMessages = async (conversationId: number): Promise<AxiosResponse<Message[]>> => {
     const { token } = getSession();
     if (!token) {
         throw new Error('permission denied');
     }
 
-    return await axios.get(`${config.SERVER_URL}/conversation/${conversationId}/message`, {
+    return await axios.get(`${config.SERVER_URL}/conversation/${conversationId}/messages`, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
